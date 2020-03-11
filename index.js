@@ -1,5 +1,7 @@
 const superagent = require('superagent');
 const fs = require('fs');
+var nombres = []
+
 function imprimirMuseos(error, respuesta) {
   if (error) {
     throw new Error('algo se rompió', error);
@@ -18,8 +20,8 @@ superagent
   .get('https://www.cultura.gob.ar/api/v2.0/museos')
   .query({ format: 'json' })
   .end(
-    const nombres=  
-    fs.writeFile('./museos.txt', "hola", procesarArchivo)
+        procesarArchivo    // 
+
   )
 
 
@@ -31,7 +33,15 @@ function procesarArchivo(error, res) {
   if (error !== null) {
     console.error('Algo salió mal :(')
     console.error(error)
-  } 
+  }   
+
+  const museos = res.body.results;
+  const nombres = museos.map((element) => 
+    element.nombre +"( " + element.direccion +" )" + ", por cualquier consulta comunicarse al : "+element.telefono
+  );
+  
+ fs.writeFile('./museos.txt', nombres.join('\n'), procesarArchivo) 
+
 }
 
 // El segundo parámetro es necesario para que NodeJS sepa que queremos leerlo como String
